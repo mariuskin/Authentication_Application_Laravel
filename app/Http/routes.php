@@ -22,6 +22,30 @@ Route::get('/login', function(){
 	return view('login');
 });
 
+Route::post('/login', function(){
+	$credentials = Request::only('email', 'password');
+	if (Auth::attempt($credentials)){
+		return 	Redirect::intended('/spotlight');
+	}
+	return Redirect::to('/login');
+});
+
 Route::get('/logout', function(){
+	Auth::logout();
 	return view('logout');
 });
+
+Route::get('/spotlight', array( 
+	'middleware' =>	'auth',
+	function(){
+		return view('spotlight');
+}
+));
+
+Route::get('/insider', array( 
+	'middleware' =>	'auth',
+	function(){
+		return view('insider');
+}
+));
+
